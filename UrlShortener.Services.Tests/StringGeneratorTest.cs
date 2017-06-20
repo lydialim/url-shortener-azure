@@ -17,11 +17,11 @@ namespace UrlShortener.Services.Tests
         }
 
         [TestCase(100000)]
-        public void Generate_Performance_Check(int loopCount)
+        public void Generate_Performance_IsLessThan50ms(int loopCount)
         {
             var timer = Stopwatch.StartNew();
 
-            for (int i = 0; i <= loopCount; i++)
+            for (int i = 0; i < loopCount; i++)
             {
                 string result = StringGenerator.Generate();
             }
@@ -30,31 +30,39 @@ namespace UrlShortener.Services.Tests
             var timespan = timer.Elapsed;
 
             Console.WriteLine(string.Format("Completed in {0} ms", timespan.TotalMilliseconds));
-            Assert.LessOrEqual(timespan.TotalMilliseconds, 30);
+            Assert.LessOrEqual(timespan.TotalMilliseconds, 50);
         }
-
-        /// <summary>
-        /// For 6 characters, 30k max count seems to be the safest bet.
-        /// </summary>
-        /// <param name="loopCount"></param>
-        [TestCase(30000)]
-        public void Generate_Collision_Check(int loopCount)
+        
+        [TestCase(100000)]
+        public void Generate_Collision_IsLessThanOnePercent(int loopCount)
         {
+            int collision = 0;
             var hashSet = new HashSet<string>();
             var timer = Stopwatch.StartNew();
 
-            for (int i = 0; i <= loopCount; i++)
+            for (int i = 0; i < loopCount; i++)
             {
                 string result = StringGenerator.Generate();
 
-                Assert.IsFalse(hashSet.Contains(result), $"Duplicate string : {result} on {i} try");
-                hashSet.Add(result);
+                if (hashSet.Contains(result))
+                {
+                    collision++;
+                }
+                else
+                {
+                    hashSet.Add(result);
+                }
             }
 
             timer.Stop();
             var timespan = timer.Elapsed;
 
-            Console.WriteLine(string.Format("Completed in {0} ms", timespan.TotalMilliseconds));
+            // Stats
+            var collisionPercent = collision / (double)loopCount * 100;
+            Console.WriteLine($"Ran {loopCount} with {collision} ({collisionPercent}%) collision.");
+            Console.WriteLine($"Completed in {timespan.TotalMilliseconds} ms");
+
+            Assert.Less(collisionPercent, 1);
         }
     }
 }

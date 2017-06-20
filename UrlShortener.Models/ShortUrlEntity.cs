@@ -14,7 +14,7 @@ namespace UrlShortner.Models
 
         public ShortUrlEntity()
         {
-
+            // for retrieval puprpose
         }
 
         /// <summary>

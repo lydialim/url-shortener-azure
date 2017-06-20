@@ -1,5 +1,7 @@
-﻿using Microsoft.WindowsAzure.Storage;
+﻿using Microsoft.Azure;
+using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
+using System.Configuration;
 using System.Threading.Tasks;
 using UrlShortner.Models;
 
@@ -7,13 +9,22 @@ namespace UrlShortener.Services
 {
     internal class ShortenUrlLogRepository : IShortenUrlLogRepository
     {
+        private const string ConnectionStringKey = "StorageConnectionString";
         private const string TableName = "shortenUrlLog";
 
         private readonly CloudStorageAccount _storageAccount;
         private readonly CloudTableClient _tableClient;
 
-        public ShortenUrlLogRepository(string connectionString)
+        public ShortenUrlLogRepository()
         {
+            string connectionString = ConfigurationManager.ConnectionStrings[ConnectionStringKey]?.ConnectionString;
+
+            // if connection string is null, attempt to use default value
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                connectionString = CloudConfigurationManager.GetSetting(ConnectionStringKey);
+            }
+
             // Parse the connection string and return a reference to the storage account.
             _storageAccount = CloudStorageAccount.Parse(connectionString);
 
@@ -27,12 +38,10 @@ namespace UrlShortener.Services
             table.CreateIfNotExists();
         }
 
-        public async Task<string> SaveAsync(string shortCode, string userAgent, string clientIp)
+        public async Task<string> SaveAsync(ShortUrlLogEntity logEntity)
         {
-            var newEntity = new ShortUrlLogEntity(shortCode, userAgent, clientIp);
-
             // Create the TableOperation object that inserts the entity.
-            TableOperation insertOperation = TableOperation.Insert(newEntity);
+            TableOperation insertOperation = TableOperation.Insert(logEntity);
 
             var table = _tableClient.GetTableReference(TableName);
 

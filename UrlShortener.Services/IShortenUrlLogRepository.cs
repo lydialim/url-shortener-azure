@@ -1,9 +1,10 @@
 ﻿using System.Threading.Tasks;
+using UrlShortner.Models;
 
 namespace UrlShortener.Services
 {
     public interface IShortenUrlLogRepository
     {
-        Task<string> SaveAsync(string shortCode, string userAgent, string clientIp);
+        Task<string> SaveAsync(ShortUrlLogEntity logEntity);
     }
 }

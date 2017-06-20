@@ -6,7 +6,7 @@ namespace UrlShortener.Services
 {
     public interface IShortenUrlRepository
     {
-        Task<ShortUrlEntity> FindLongUrlAsync(string shortCode);
+        Task<string> GetLongUrlAsync(string shortCode);
 
         Task<string> SaveAsync(string shortCode, string longUrl);
 

@@ -1,8 +1,10 @@
 ﻿
+using Microsoft.Azure;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using UrlShortner.Models;
@@ -11,13 +13,22 @@ namespace UrlShortener.Services
 {
     internal class ShortenUrlRepository : IShortenUrlRepository
     {
+        private const string ConnectionStringKey = "StorageConnectionString";
         private const string TableName = "shortenUrl";
 
         private readonly CloudStorageAccount _storageAccount;
         private readonly CloudTableClient _tableClient;
 
-        public ShortenUrlRepository(string connectionString)
+        public ShortenUrlRepository()
         {
+            string connectionString = ConfigurationManager.ConnectionStrings[ConnectionStringKey]?.ConnectionString;
+
+            // if connection string is null, attempt to use default value
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                connectionString = CloudConfigurationManager.GetSetting(ConnectionStringKey);
+            }
+
             // Parse the connection string and return a reference to the storage account.
             _storageAccount = CloudStorageAccount.Parse(connectionString);
 
@@ -56,7 +67,7 @@ namespace UrlShortener.Services
         /// </summary>
         /// <param name="shortCode">The shorten url code</param>
         /// <returns><see cref="ShortUrlEntity"/></returns>
-        public async Task<ShortUrlEntity> FindLongUrlAsync(string shortCode)
+        public async Task<string> GetLongUrlAsync(string shortCode)
         {
             // Create a retrieve operation that takes a entity.
             var retrieveOperation = TableOperation.Retrieve<ShortUrlEntity>(shortCode, string.Empty);
@@ -71,7 +82,7 @@ namespace UrlShortener.Services
             }
 
             var entity = retrievedResult.Result as ShortUrlEntity;
-            return entity;
+            return entity.LongUrl;
         }
 
         /// <summary>

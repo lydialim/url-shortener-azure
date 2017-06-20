@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using UrlShortner.Models;
 
 namespace UrlShortener.Services
 {
@@ -15,10 +16,11 @@ namespace UrlShortener.Services
             _shortenUrlRepository = shortenUrlRepository;
             _logRepository = shortenUrlLogRepository;
         }
-
-        public ShortenerService(string connectionString) : this(
-            new ShortenUrlRepository(connectionString),
-            new ShortenUrlLogRepository(connectionString))
+        
+        // should be fullfill by DI
+        public ShortenerService() : this(
+            new ShortenUrlRepository(),
+            new ShortenUrlLogRepository())
         {
         }
 
@@ -61,7 +63,21 @@ namespace UrlShortener.Services
         /// <returns></returns>
         public async Task<String> GetLongUrlAsync(string shortCode)
         {
-            return await Task.FromResult("GetLongUrlAsync");
+            return await _shortenUrlRepository.GetLongUrlAsync(shortCode);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="shortCode"></param>
+        /// <param name="userAgent"></param>
+        /// <param name="clientIp"></param>
+        /// <returns></returns>
+        public async Task LogView(string shortCode, string userAgent, string clientIp)
+        {
+            var newEntity = new ShortUrlLogEntity(shortCode, userAgent, clientIp);
+
+            await _logRepository.SaveAsync(newEntity);
         }
     }
 }

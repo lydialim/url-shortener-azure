@@ -60,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Framework\AutoMoqDataAttribute.cs" />
+    <Compile Include="Framework\GreedyConstructorCustomization.cs" />
     <Compile Include="ShortenerServiceTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringGeneratorTest.cs" />
