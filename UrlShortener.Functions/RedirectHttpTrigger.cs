@@ -21,11 +21,14 @@ namespace UrlShortener.Functions
             string clientIp = null;
             if (req.Headers.Contains("X-Forwarded-For"))
             {
-                clientIp = req.Headers.GetValues("X-Forwarded-For").FirstOrDefault‌​();
+                clientIp = req.Headers.GetValues("X-Forwarded-For")
+                                      .FirstOrDefault‌​()
+                                      .Split(new char[] { ',' })
+                                      .First();
             }
 
             // analytics
-            await service.LogView(shortCode, req.Headers.UserAgent.ToString(), clientIp);
+            await service.LogView(shortCode, longUrl, req.Headers.UserAgent.ToString(), clientIp);
 
             var response = req.CreateResponse(HttpStatusCode.Redirect);
             response.Headers.Add("Location", longUrl);

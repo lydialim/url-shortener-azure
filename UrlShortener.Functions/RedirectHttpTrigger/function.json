@@ -9,7 +9,8 @@
       "name": "req",
       "type": "httpTrigger",
       "direction": "in",
-      "route": "redirect/{shortCode}"
+      "route": "redirect/{shortCode}",
+      "methods": [ "get"]
     },
     {
       "name": "$return",

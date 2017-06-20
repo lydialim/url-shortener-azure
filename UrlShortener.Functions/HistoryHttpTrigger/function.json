@@ -1,6 +1,6 @@
 ﻿{
   "scriptFile": "..\\bin\\UrlShortener.Functions.dll",
-  "entryPoint": "UrlShortener.Functions.CreateHttpTrigger.Run",
+  "entryPoint": "UrlShortener.Functions.HistoryHttpTrigger.Run",
 
   "disabled": false,
   "bindings": [
@@ -9,8 +9,8 @@
       "name": "req",
       "type": "httpTrigger",
       "direction": "in",
-      "route": "create",
-      "methods": [ "post", "put" ]
+      "route": "history",
+      "methods": [ "get" ]
     },
     {
       "name": "$return",

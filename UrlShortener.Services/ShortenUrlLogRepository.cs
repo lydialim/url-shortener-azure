@@ -1,6 +1,8 @@
 ﻿using Microsoft.Azure;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
+using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Threading.Tasks;
 using UrlShortner.Models;
@@ -36,6 +38,15 @@ namespace UrlShortener.Services
 
             // Create the table if it doesn't exist.
             table.CreateIfNotExists();
+        }
+
+        public IEnumerable<ShortUrlLogEntity> GetVisitsLastXDays(int lastXDays = 3)
+        {
+            var query = new TableQuery<ShortUrlLogEntity>()
+                                        .Where(TableQuery.GenerateFilterConditionForDate("Timestamp", QueryComparisons.LessThanOrEqual, DateTime.UtcNow.AddDays(lastXDays)));
+
+            var table = _tableClient.GetTableReference(TableName);
+            return table.ExecuteQuery(query);
         }
 
         /// <summary>

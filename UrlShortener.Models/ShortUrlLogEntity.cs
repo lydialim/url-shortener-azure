@@ -5,13 +5,21 @@ namespace UrlShortner.Models
 {
     public class ShortUrlLogEntity : TableEntity
     {
-        public ShortUrlLogEntity(string shortCode, string userAgent, string clientIp)
+        public ShortUrlLogEntity(string shortCode, string longUrl, string userAgent, string clientIp)
         {
             this.PartitionKey = shortCode;
             this.RowKey = Guid.NewGuid().ToString();
+            this.LongUrl = LongUrl;
             this.UserAgent = userAgent;
             this.ClientIp = clientIp ?? string.Empty;
         }
+
+        public ShortUrlLogEntity()
+        {
+
+        }
+
+        public string LongUrl { get; set; }
 
         /// <summary>
         /// Requester user agent

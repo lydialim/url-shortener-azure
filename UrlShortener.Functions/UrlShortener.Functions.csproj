@@ -99,12 +99,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="CreateHttpTrigger\function.json" />
+    <Compile Include="HistoryHttpTrigger.cs" />
     <Compile Include="RedirectHttpTrigger.cs" />
     <Compile Include="CreateHttpTrigger.cs" />
     <Content Include="packages.config" />
     <Content Include="host.json" />
     <Content Include="RedirectHttpTrigger\function.json" />
     <Content Include="proxies.json" />
+    <Content Include="HistoryHttpTrigger\function.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

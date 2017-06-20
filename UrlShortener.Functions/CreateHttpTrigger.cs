@@ -12,7 +12,7 @@ namespace UrlShortener.Functions
             // Get request body
             dynamic data = await req.Content.ReadAsAsync<object>();
 
-            string longUrl = data?.url;
+            string longUrl = data?.url?.Trim();
             if (string.IsNullOrEmpty(longUrl))
             {
                 return req.CreateResponse(HttpStatusCode.BadRequest);
