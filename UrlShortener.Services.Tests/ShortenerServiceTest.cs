@@ -42,7 +42,7 @@ namespace UrlShortener.Services.Tests
             var result = await sut.CreateShortUrlAsync("http://www.google.com/");
 
             // Then
-            Assert.AreSame(result.Item1, fakeShortCode); // shortcode result
+            Assert.AreEqual(result.Item1, fakeShortCode); // shortcode result
             Assert.IsNull(result.Item2); // error should be null
         }
 

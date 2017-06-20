@@ -13,7 +13,7 @@ namespace UrlShortener.Services.Tests
         {
             string result = StringGenerator.Generate(stringLength);
 
-            Assert.Equals(stringLength, result.Length);
+            Assert.AreEqual(stringLength, result.Length);
         }
 
         [TestCase(100000)]

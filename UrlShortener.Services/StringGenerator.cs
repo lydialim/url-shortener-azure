@@ -9,10 +9,10 @@ namespace UrlShortener.Services
         private readonly static Random _random = new Random();
 
         /// <summary>
-        /// 
+        /// Generates a random string
         /// </summary>
-        /// <param name="length"></param>
-        /// <returns></returns>
+        /// <param name="length">Default length is 6</param>
+        /// <returns>A random string</returns>
         public static string Generate(int length = 6)
         {
             char[] chars = new char[length];

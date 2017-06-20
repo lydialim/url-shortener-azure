@@ -38,6 +38,11 @@ namespace UrlShortener.Services
             table.CreateIfNotExists();
         }
 
+        /// <summary>
+        /// Save the <paramref name="logEntity"/> into log table
+        /// </summary>
+        /// <param name="logEntity"></param>
+        /// <returns></returns>
         public async Task<string> SaveAsync(ShortUrlLogEntity logEntity)
         {
             // Create the TableOperation object that inserts the entity.

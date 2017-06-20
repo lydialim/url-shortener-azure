@@ -1,4 +1,5 @@
 ﻿using Microsoft.WindowsAzure.Storage.Table;
+using System;
 
 namespace UrlShortner.Models
 {
@@ -7,7 +8,7 @@ namespace UrlShortner.Models
         public ShortUrlLogEntity(string shortCode, string userAgent, string clientIp)
         {
             this.PartitionKey = shortCode;
-            this.RowKey = string.Empty;
+            this.RowKey = Guid.NewGuid().ToString();
             this.UserAgent = userAgent;
             this.ClientIp = clientIp ?? string.Empty;
         }

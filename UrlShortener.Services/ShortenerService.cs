@@ -25,10 +25,14 @@ namespace UrlShortener.Services
         }
 
         /// <summary>
-        /// 
+        /// Creates a new short code if <paramref name="urlToShorten"/> is brand new. 
+        /// Otherwise it would return the existing short code
         /// </summary>
-        /// <param name="urlToShorten"></param>
-        /// <returns></returns>
+        /// <param name="urlToShorten">Long url to be shorten</param>
+        /// <returns>
+        /// Item1 - shortCode
+        /// Item2 - error message if any
+        /// </returns>
         public async Task<Tuple<string, string>> CreateShortUrlAsync(string urlToShorten)
         {
             // check if this is a valid url 
@@ -57,21 +61,21 @@ namespace UrlShortener.Services
         }
 
         /// <summary>
-        /// 
+        /// Retrieve the long url based on <paramref name="shortCode"/>
         /// </summary>
-        /// <param name="shortCode"></param>
-        /// <returns></returns>
+        /// <param name="shortCode">Short Code</param>
+        /// <returns>The long url if a match is found, otherwise NULL</returns>
         public async Task<String> GetLongUrlAsync(string shortCode)
         {
             return await _shortenUrlRepository.GetLongUrlAsync(shortCode);
         }
 
         /// <summary>
-        /// 
+        /// Logs a visit for the shortcode for analytics purpose
         /// </summary>
-        /// <param name="shortCode"></param>
-        /// <param name="userAgent"></param>
-        /// <param name="clientIp"></param>
+        /// <param name="shortCode">Short Code</param>
+        /// <param name="userAgent">The requester's User Agent</param>
+        /// <param name="clientIp">The client IP address</param>
         /// <returns></returns>
         public async Task LogView(string shortCode, string userAgent, string clientIp)
         {
