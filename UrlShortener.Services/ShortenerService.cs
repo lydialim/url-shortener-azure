@@ -79,9 +79,9 @@ namespace UrlShortener.Services
         /// </summary>
         /// <param name="lastXDays"></param>
         /// <returns></returns>
-        public IEnumerable<dynamic> GetLastXDaysUrlHistory(int lastXDays = 3)
+        public async Task<IEnumerable<dynamic>> GetLastXDaysUrlHistory(int lastXDays = 3)
         {
-            var result = _logRepository.GetVisitsLastXDays(lastXDays);
+            var result = await Task.Run(() =>_logRepository.GetVisitsLastXDays(lastXDays));
             if (result == null)
             {
                 return null;

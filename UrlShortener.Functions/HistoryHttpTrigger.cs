@@ -14,7 +14,7 @@ namespace UrlShortener.Functions
         {
             var service = new ShortenerService();
 
-            var data = service.GetLastXDaysUrlHistory();
+            var data = await service.GetLastXDaysUrlHistory();
             if (data == null)
             {
                 return req.CreateResponse(HttpStatusCode.OK);
