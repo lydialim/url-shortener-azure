@@ -12,14 +12,14 @@ namespace UrlShortener.Functions
             // Get request body
             dynamic data = await req.Content.ReadAsAsync<object>();
 
-            string longUrl = data?.url?.Trim();
-            if (string.IsNullOrEmpty(longUrl))
+            string longUrl = data?.url;
+            if (string.IsNullOrWhiteSpace(longUrl))
             {
                 return req.CreateResponse(HttpStatusCode.BadRequest);
             }
             
             var service = new ShortenerService();
-            var result = await service.CreateShortUrlAsync(longUrl);
+            var result = await service.CreateShortUrlAsync(longUrl.Trim());
 
             return result.Item1 == null
                 ? req.CreateErrorResponse(HttpStatusCode.BadRequest, result.Item2)

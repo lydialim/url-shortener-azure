@@ -40,8 +40,7 @@ namespace UrlShortener.Services
         public async Task<Tuple<string, string>> CreateShortUrlAsync(string urlToShorten)
         {
             // check if this is a valid url 
-            Uri uriResult;
-            if (!Uri.TryCreate(urlToShorten, UriKind.Absolute, out uriResult))
+            if (!Uri.TryCreate(urlToShorten, UriKind.Absolute, out Uri uriResult))
             {
                 return new Tuple<string, string>(null, "Invalid Uri");
             }

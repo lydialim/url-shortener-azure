@@ -9,7 +9,7 @@ namespace UrlShortner.Models
         {
             this.PartitionKey = shortCode;
             this.RowKey = Guid.NewGuid().ToString();
-            this.LongUrl = LongUrl;
+            this.LongUrl = longUrl;
             this.UserAgent = userAgent;
             this.ClientIp = clientIp ?? string.Empty;
         }
@@ -19,6 +19,9 @@ namespace UrlShortner.Models
 
         }
 
+        /// <summary>
+        /// Long Url
+        /// </summary>
         public string LongUrl { get; set; }
 
         /// <summary>
