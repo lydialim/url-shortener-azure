@@ -8,13 +8,13 @@
           "GET"
         ]
       },
-      "backendUri": "https://%WEBSITE_HOSTNAME%/api/redirect/{shortCode}"
+      "backendUri": "http://%WEBSITE_HOSTNAME%/api/redirect/{shortCode}"
     },
     "Api": {
       "matchCondition": {
         "route": "/api/{*path}"
       },
-      "backendUri": "https://%WEBSITE_HOSTNAME%/api/{path}"
+      "backendUri": "http://%WEBSITE_HOSTNAME%/api/{path}"
     }
   }
 }
