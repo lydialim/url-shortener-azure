@@ -18,21 +18,34 @@ namespace UrlShortener.Functions
                 return req.CreateResponse(HttpStatusCode.NotFound);
             }
 
-            string clientIp = null;
-            if (req.Headers.Contains("X-Forwarded-For"))
-            {
-                clientIp = req.Headers.GetValues("X-Forwarded-For")
-                                      .FirstOrDefault‌​()
-                                      .Split(new char[] { ',' })
-                                      .First();
-            }
-
             // analytics
+            string clientIp = GetClientIpAddress(req);
             await service.LogView(shortCode, longUrl, req.Headers.UserAgent.ToString(), clientIp);
 
             var response = req.CreateResponse(HttpStatusCode.Redirect);
             response.Headers.Add("Location", longUrl);
             return response;
+        }
+
+        private static string GetClientIpAddress(HttpRequestMessage req)
+        {
+            string clientIp = null;
+            if (req.Headers.Contains("X-Forwarded-For"))
+            {
+                clientIp = req.Headers.GetValues("X-Forwarded-For").First();
+            }
+
+            if (string.IsNullOrEmpty(clientIp) && req.Headers.Contains("REMOTE_ADDR"))
+            {
+                clientIp = req.Headers.GetValues("REMOTE_ADDR").First();
+            }
+
+            if (string.IsNullOrEmpty(clientIp))
+            {
+                return string.Empty;
+            }
+
+            return clientIp.Split(new char[] { ':' })[0];
         }
     }
 }
